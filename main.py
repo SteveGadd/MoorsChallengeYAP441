@@ -6,7 +6,18 @@ import time
 from src.constants import BLACK, WHITE, AI_MOVE_DELAY
 from src.board import OthelloBoard
 from src.gui import OthelloGUI
-from src.ai import OthelloAI
+from src.ai.minimax_ai import MinimaxAI
+from src.ai.expectimax_ai import ExpectimaxAI
+from src.ai.mcts_ai import MCTSAI
+
+def create_ai(choice: int) -> object:
+    """Create the selected AI opponent."""
+    if choice == 0:
+        return MinimaxAI(WHITE), "Minimax with Alpha-Beta Pruning"
+    elif choice == 1:
+        return ExpectimaxAI(WHITE), "Expectimax"
+    else:
+        return MCTSAI(WHITE), "Monte Carlo Tree Search"
 
 def main():
     # Initialize Pygame
@@ -15,7 +26,16 @@ def main():
     # Create game objects
     board = OthelloBoard()
     gui = OthelloGUI()
-    ai = OthelloAI(WHITE)  # AI plays as white
+    
+    # Show AI selection menu
+    ai_choice = gui.show_algorithm_selection_menu()
+    if ai_choice == -1:  # User closed the window
+        pygame.quit()
+        sys.exit()
+    
+    # Create AI opponent
+    ai, ai_name = create_ai(ai_choice)
+    
     clock = pygame.time.Clock()
     game_over = False
     last_move_time = 0  # Track when the last move was made
@@ -63,21 +83,15 @@ def main():
                     game_over = True
 
         # Draw the current state
-        gui.draw_board(board)
+        gui.draw_board(board, ai_name)
         
         # Display game over
         if game_over:
             black_score, white_score = board.get_score()
-            print(f"Game Over! Final score - Black: {black_score}, White: {white_score}")
-            if black_score > white_score:
-                print("Black wins!")
-            elif white_score > black_score:
-                print("White wins!")
-            else:
-                print("It's a tie!")
+            gui.show_game_over_screen(black_score, white_score)
 
         # Cap the frame rate
         clock.tick(60)
 
 if __name__ == "__main__":
-    main() 
+    main()

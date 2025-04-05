@@ -96,4 +96,19 @@ class OthelloBoard:
         new_board = OthelloBoard()
         new_board.board = [row[:] for row in self.board]
         new_board.current_player = self.current_player
-        return new_board 
+        return new_board
+
+    def is_game_over(self) -> bool:
+        """Check if the game is over."""
+        # Check if the current player has valid moves
+        if self.get_valid_moves():
+            return False
+        
+        # Temporarily switch to the opponent and check their valid moves
+        original_player = self.current_player
+        self.current_player = self._opposite_color()
+        opponent_has_moves = bool(self.get_valid_moves())
+        self.current_player = original_player  # Restore the original player
+
+        # If neither player has valid moves, the game is over
+        return not opponent_has_moves
