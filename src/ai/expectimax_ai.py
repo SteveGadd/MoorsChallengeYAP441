@@ -15,26 +15,16 @@ class ExpectimaxAI(BaseAI):
 
     def _initialize_position_weights(self) -> List[List[float]]:
         """Initialize position weights for the board."""
-        weights = [[0.0 for _ in range(BOARD_SIZE)] for _ in range(BOARD_SIZE)]
-        
-        # Corner positions (highest value)
-        corners = [(0, 0), (0, BOARD_SIZE-1), (BOARD_SIZE-1, 0), (BOARD_SIZE-1, BOARD_SIZE-1)]
-        for row, col in corners:
-            weights[row][col] = 100.0
-            
-        # Edge positions (high value)
-        for i in range(BOARD_SIZE):
-            if i not in [0, BOARD_SIZE-1]:
-                weights[0][i] = 1.0  # Top edge
-                weights[BOARD_SIZE-1][i] = 1.0  # Bottom edge
-                weights[i][0] = 1.0  # Left edge
-                weights[i][BOARD_SIZE-1] = 1.0  # Right edge
-                
-        # Inner positions (lower value)
-        for i in range(1, BOARD_SIZE-1):
-            for j in range(1, BOARD_SIZE-1):
-                weights[i][j] = 0.5
-                
+        weights = [
+            [1000.0, -100.0,  20.0,  10.0,  10.0,  20.0, -100.0, 1000.0],
+            [-100.0, -200.0,  -5.0,  -5.0,  -5.0,  -5.0, -200.0, -100.0],
+            [20.0,   -5.0,    5.0,   3.0,   3.0,   5.0,   -5.0,   20.0],
+            [10.0,   -5.0,    3.0,   2.0,   2.0,   3.0,   -5.0,   10.0],
+            [10.0,   -5.0,    3.0,   2.0,   2.0,   3.0,   -5.0,   10.0],
+            [20.0,   -5.0,    5.0,   3.0,   3.0,   5.0,   -5.0,   20.0],
+            [-100.0, -200.0,  -5.0,  -5.0,  -5.0,  -5.0, -200.0, -100.0],
+            [1000.0, -100.0,  20.0,  10.0,  10.0,  20.0, -100.0, 1000.0],
+        ]
         return weights
 
     def get_move(self, board: OthelloBoard) -> Optional[Tuple[int, int]]:
@@ -172,7 +162,7 @@ class ExpectimaxAI(BaseAI):
 
         # Check if piece is in a corner
         if (row, col) in [(0, 0), (0, BOARD_SIZE-1), (BOARD_SIZE-1, 0), (BOARD_SIZE-1, BOARD_SIZE-1)]:
-            return 2.0
+            return 10000.0
 
         # Check if piece is on an edge
         if row == 0 or row == BOARD_SIZE-1 or col == 0 or col == BOARD_SIZE-1:

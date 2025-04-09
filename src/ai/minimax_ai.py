@@ -142,65 +142,11 @@ class MinimaxAI(BaseAI):
         board.current_player = self.color  # reset
         mobility_score = (my_moves - opp_moves) * 2.0
         
-        # Corner control
-        corner_score = self._evaluate_corners(board)
-        
-        # Edge stability
-        edge_score = self._evaluate_edges(board)
-        
-        # Corner adjacency danger
-        danger_score = self._evaluate_corner_danger(board)
         
         # Game phase adjustment
         if total_pieces < 20:  # Early game
-            return position_score * 0.6 + mobility_score * 0.4 + corner_score * 0.2 + score_diff * 0.1
+            return position_score * 0.9 + mobility_score * 0.1
         elif total_pieces < 50:  # Middle game
-            return position_score * 0.4 + mobility_score * 0.3 + corner_score * 0.3 + edge_score * 0.2 + score_diff * 0.2
+            return position_score * 0.6 + mobility_score * 0.3 + + score_diff * 0.1
         else:  # End game
-            return score_diff * 0.8 + corner_score * 0.2 + position_score * 0.1
-
-    def _evaluate_corners(self, board: OthelloBoard) -> float:
-        """Evaluate corner control."""
-        corners = [(0, 0), (0, BOARD_SIZE-1), (BOARD_SIZE-1, 0), (BOARD_SIZE-1, BOARD_SIZE-1)]
-        corner_score = 0
-        for row, col in corners:
-            if board.board[row][col] == self.color:
-                corner_score += 100.0
-            elif board.board[row][col] == board._opposite_color():
-                corner_score -= 100.0
-        return corner_score
-
-    def _evaluate_edges(self, board: OthelloBoard) -> float:
-        """Evaluate edge stability."""
-        edge_score = 0
-        # Check horizontal edges
-        for col in range(1, BOARD_SIZE-1):
-            if board.board[0][col] == self.color:
-                edge_score += 10.0
-            elif board.board[0][col] == board._opposite_color():
-                edge_score -= 10.0
-            if board.board[BOARD_SIZE-1][col] == self.color:
-                edge_score += 10.0
-            elif board.board[BOARD_SIZE-1][col] == board._opposite_color():
-                edge_score -= 10.0
-        # Check vertical edges
-        for row in range(1, BOARD_SIZE-1):
-            if board.board[row][0] == self.color:
-                edge_score += 10.0
-            elif board.board[row][0] == board._opposite_color():
-                edge_score -= 10.0
-            if board.board[row][BOARD_SIZE-1] == self.color:
-                edge_score += 10.0
-            elif board.board[row][BOARD_SIZE-1] == board._opposite_color():
-                edge_score -= 10.0
-        return edge_score
-
-    def _evaluate_corner_danger(self, board: OthelloBoard) -> float:
-        """Evaluate danger of corner captures."""
-        danger_score = 0
-        for row, col in self.corner_adjacent:
-            if board.board[row][col] == self.color:
-                danger_score -= 50.0  # Penalty for playing in corner-adjacent positions
-            elif board.board[row][col] == board._opposite_color():
-                danger_score += 50.0  # Bonus if opponent plays in corner-adjacent positions
-        return danger_score 
+            return score_diff * 0.9 + position_score * 0.1
