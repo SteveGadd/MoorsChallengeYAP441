@@ -181,3 +181,4 @@ class OthelloGUI:
                     event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE
                 ):
                     waiting = False
+                    exit(1)

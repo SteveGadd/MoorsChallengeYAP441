@@ -32,7 +32,7 @@ class MCTSAI(BaseAI):
         # Corner positions (highest value)
         corners = [(0, 0), (0, BOARD_SIZE-1), (BOARD_SIZE-1, 0), (BOARD_SIZE-1, BOARD_SIZE-1)]
         for row, col in corners:
-            weights[row][col] = 8.0
+            weights[row][col] = 100.0
             
         # Edge positions (high value)
         for i in range(BOARD_SIZE):
