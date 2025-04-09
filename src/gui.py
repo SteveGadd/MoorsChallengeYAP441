@@ -97,7 +97,7 @@ class OthelloGUI:
                                      center, CELL_SIZE // 2 - 4)
                 
                 # Draw valid move indicators
-                elif (row, col) in valid_moves:
+                elif (row, col) in valid_moves and board.current_player == BLACK:
                     pygame.draw.circle(self.screen, DARK_GREEN,
                                      center, CELL_SIZE // 8)
 

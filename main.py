@@ -13,11 +13,11 @@ from src.ai.mcts_ai import MCTSAI
 def create_ai(choice: int) -> object:
     """Create the selected AI opponent."""
     if choice == 0:
-        return MinimaxAI(WHITE), "Minimax with Alpha-Beta Pruning"
+        return MinimaxAI(WHITE), "Minimax"
     elif choice == 1:
         return ExpectimaxAI(WHITE), "Expectimax"
     else:
-        return MCTSAI(WHITE), "Monte Carlo Tree Search"
+        return MCTSAI(WHITE), "MCTS"
 
 def main():
     # Initialize Pygame
