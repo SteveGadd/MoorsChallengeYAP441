@@ -11,11 +11,12 @@ A Python implementation of the classic Othello (Reversi) board game using Pygame
    ```
 3. Run the game:
    ```
-   python othello.py
+   python main.py
    ```
 
 ## How to Play
 
+- Choose an AI algorithm to play against
 - Black always moves first
 - Click on a valid position to place your piece
 - Valid moves are highlighted with dots
